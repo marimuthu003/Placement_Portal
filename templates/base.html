@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Placement Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Warm & Motivating Light Theme */
+            --primary: #f97316; /* Vibrant Orange */
+            --primary-glow: rgba(249, 115, 22, 0.35);
+            --secondary: #f43f5e; /* Rose / Pink */
+            --secondary-glow: rgba(244, 63, 94, 0.35);
+            --danger: #ef4444; 
+            --background: #fffdfc; /* Very soft warm white */
+            --surface: rgba(255, 255, 255, 0.85);
+            --text-main: #292524; /* Warm Dark Stone */
+            --text-light: #78716c; /* Warm Medium Stone */
+            --border: rgba(231, 229, 228, 0.8);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        /* Animated Mesh Background Light */
+        body {
+            background-color: var(--background);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(249, 115, 22, 0.12) 0, transparent 50%), 
+                radial-gradient(at 80% 0%, rgba(244, 63, 94, 0.1) 0, transparent 50%), 
+                radial-gradient(at 100% 100%, rgba(250, 204, 21, 0.1) 0, transparent 50%);
+            color: var(--text-main);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Moving Blobs behind everything */
+        body::before, body::after {
+            content: '';
+            position: fixed;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            filter: blur(120px);
+            z-index: -2;
+            animation: float 15s ease-in-out infinite alternate;
+        }
+        body::before {
+            background: rgba(249, 115, 22, 0.15);
+            top: -20%;
+            left: -10%;
+        }
+        body::after {
+            background: rgba(244, 63, 94, 0.12);
+            bottom: -20%;
+            right: -10%;
+            animation-duration: 18s;
+            animation-direction: alternate-reverse;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+            100% { transform: translate(100px, 50px) scale(1.1) rotate(20deg); }
+        }
+
+        /* Smooth Glassmorphic Nav */
+        nav {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 1.2rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            animation: slideDown 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+            transform: translateY(-100%);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+        }
+
+        nav .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+            letter-spacing: -0.5px;
+            transition: transform 0.3s ease, filter 0.3s ease;
+        }
+        nav .logo:hover {
+            transform: scale(1.05) rotate(-2deg);
+            filter: drop-shadow(0 4px 10px var(--primary-glow));
+        }
+
+        nav .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            animation: fadeInRight 1s ease 0.3s forwards;
+            opacity: 0;
+        }
+        
+        @keyframes fadeInRight {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        nav a.nav-item {
+            text-decoration: none;
+            color: var(--text-light);
+            font-weight: 600;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        nav a.nav-item::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        nav a.nav-item:hover { color: var(--primary); }
+        nav a.nav-item:hover::after { width: 100%; }
+
+        /* Buttons with micro-interactions */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.7rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #ff7e5f, var(--primary));
+            color: white !important;
+            box-shadow: 0 4px 15px var(--primary-glow);
+        }
+        
+        /* Shimmer Animation on Primary Buttons */
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 50%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.4), transparent);
+            transform: skewX(-20deg);
+            animation: shimmer 3s infinite;
+            pointer-events: none;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 8px 25px rgba(249, 115, 22, 0.4);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--primary) !important;
+            border: 2px solid var(--primary);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-3px) scale(1.02);
+            background: #fffcf8;
+            box-shadow: 0 8px 20px var(--primary-glow);
+        }
+
+        .btn-success { background: linear-gradient(135deg, #34d399, #10b981); color: white !important; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3); }
+        .btn-success:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4); }
+
+        .btn-danger { background: linear-gradient(135deg, var(--danger), #e11d48); color: white !important; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3); }
+        .btn-danger:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4); }
+
+        /* Glassmorphic Cards with Entrance Animation */
+        .container {
+            flex: 1;
+            padding: 3rem 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .card {
+            background: var(--surface);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.04), inset 0 0 0 1px rgba(255,255,255,1);
+            border: 1px solid var(--border);
+            animation: slideUpFade 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+            transform: translateY(40px);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease, border-color 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(249, 115, 22, 0.08), inset 0 0 0 1px rgba(255,255,255,1);
+            border-color: rgba(249, 115, 22, 0.3);
+        }
+
+        /* Forms inputs bouncy enter */
+        .form-group { margin-bottom: 1.5rem; }
+        label {
+            display: block;
+            margin-bottom: 0.6rem;
+            font-weight: 600;
+            color: var(--text-main);
+            font-size: 0.95rem;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        
+        .form-group:focus-within label {
+            color: var(--primary);
+            transform: translateX(5px);
+        }
+
+        input[type="text"], input[type="password"], textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--text-main);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 0 10px var(--primary-glow);
+            transform: translateY(-3px) scale(1.01);
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 1.5rem;
+        }
+        th, td {
+            text-align: left;
+            padding: 1.2rem 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+        th { 
+            background-color: rgba(243, 244, 246, 0.6); 
+            color: var(--text-light); 
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+        }
+        tr { transition: background 0.3s ease; }
+        tr:hover td { background-color: rgba(254, 243, 199, 0.3); }
+        
+        /* Table Row Cascade Animation */
+        table tr:not(:first-child) {
+            animation: rowFadeIn 0.5s ease forwards;
+            opacity: 0;
+            transform: translateX(-15px);
+        }
+        table tr:nth-child(2) { animation-delay: 0.1s; }
+        table tr:nth-child(3) { animation-delay: 0.2s; }
+        table tr:nth-child(4) { animation-delay: 0.3s; }
+        table tr:nth-child(5) { animation-delay: 0.4s; }
+        table tr:nth-child(6) { animation-delay: 0.5s; }
+        table tr:nth-child(n+7) { animation-delay: 0.6s; }
+
+        /* Skills animation tags */
+        .skill-tag {
+            display: inline-block;
+            padding: 0.4rem 1.2rem;
+            background: rgba(249, 115, 22, 0.1);
+            color: var(--primary);
+            border-radius: 999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            border: 1px solid rgba(249, 115, 22, 0.3);
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            opacity: 0;
+            transform: scale(0.8);
+        }
+
+        .skill-tag:hover {
+            transform: scale(1.1) translateY(-2px);
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 15px var(--primary-glow);
+            border-color: var(--primary);
+            transition: all 0.3s ease;
+        }
+
+        .status {
+            padding: 0.4rem 1rem;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        .status-Pending { 
+            background: rgba(245, 158, 11, 0.15); 
+            color: #d97706; 
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            animation: pulse-soft 2s infinite; 
+            display: inline-block;
+        }
+        .status-Accepted { 
+            background: rgba(16, 185, 129, 0.15); 
+            color: #059669; 
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.1);
+        }
+        .status-Rejected { 
+            background: rgba(225, 29, 72, 0.15); 
+            color: #e11d48; 
+            border: 1px solid rgba(225, 29, 72, 0.3);
+        }
+
+        /* Gradient Text Anim for Light Mode */
+        .gradient-text-anim {
+            background: linear-gradient(270deg, #ffffff, #ffedd5, #fff1f2);
+            background-size: 200% 200%;
+            animation: gradientShift 6s ease infinite;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Keyframes */
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        @keyframes slideUpFade {
+            0% { opacity: 0; transform: translateY(50px) scale(0.98); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-100%); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes popIn {
+            0% { opacity: 0; transform: scale(0.5) rotate(-5deg); }
+            70% { transform: scale(1.1) rotate(2deg); }
+            100% { opacity: 1; transform: scale(1) rotate(0deg); }
+        }
+        @keyframes rowFadeIn {
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes pulse-soft {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.3); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 6px rgba(245, 158, 11, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
+        }
+        @keyframes shimmer {
+            0% { left: -100%; }
+            20% { left: 200%; }
+            100% { left: 200%; }
+        }
+        @keyframes floatIcon {
+            0%, 100% { transform: translateY(0); filter: drop-shadow(0 10px 15px rgba(249, 115, 22, 0.15)); }
+            50% { transform: translateY(-15px); filter: drop-shadow(0 25px 25px rgba(244, 63, 94, 0.15)); }
+        }
+        @keyframes pulseGlow {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.3; }
+            100% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.6; }
+        }
+        
+        /* Flash message animation */
+        .flash-msg {
+            padding: 1.2rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            animation: slideInRight 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid var(--border);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            color: var(--text-main);
+        }
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(100px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .textReveal {
+            animation: textReveal 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        @keyframes textReveal {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="{{ url_for('index') }}" class="logo">✦ CampusPortal</a>
+        <div class="nav-links">
+            {% if current_user.is_authenticated %}
+                <span style="font-weight: 600; color: var(--text-main);">👋 Hi, {{ current_user.username }}</span>
+                {% if current_user.role == 'admin' %}
+                    <a href="{{ url_for('admin_dashboard') }}" class="nav-item">Dashboard</a>
+                {% elif current_user.role == 'company' %}
+                    <a href="{{ url_for('company_dashboard') }}" class="nav-item">Dashboard</a>
+                {% elif current_user.role == 'student' %}
+                    <a href="{{ url_for('student_dashboard') }}" class="nav-item">Dashboard</a>
+                    <a href="{{ url_for('browse_jobs') }}" class="nav-item">Browse Jobs</a>
+                {% endif %}
+                <a href="{{ url_for('logout') }}" class="btn btn-secondary" style="padding: 0.5rem 1.2rem;">Logout</a>
+            {% else %}
+                <a href="{{ url_for('login') }}" class="nav-item">Login</a>
+                <a href="{{ url_for('register_student') }}" class="btn btn-secondary">Student Reg</a>
+                <a href="{{ url_for('register_company') }}" class="btn btn-primary" style="padding: 0.5rem 1.2rem;">Company Reg</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="flash-messages">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="flash-msg">
+                            {% if category == 'success' %}✨{% elif category == 'danger' %}⚠️{% else %}ℹ️{% endif %}
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+
+        {% block content %}{% endblock %}
+    </div>
+
+</body>
+</html>

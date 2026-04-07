@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+    <div>
+        <h1 style="color: var(--text-main);">🎓 Welcome, {{ student.name }}</h1>
+        <p style="color: var(--text-light); margin-bottom: 0.5rem;">Degree: <strong style="color: var(--primary);">{{ student.degree }}</strong></p>
+        <div style="display: flex; flex-wrap: wrap; margin-top: 0.5rem;">
+            {% if student.skills %}
+                {% for skill in student.skills.split(',') %}
+                    <span class="skill-tag" style="animation-delay: {{ loop.index0 * 0.15 }}s;">{{ skill.strip() }}</span>
+                {% endfor %}
+            {% else %}
+                <span class="skill-tag">No skills listed</span>
+            {% endif %}
+        </div>
+    </div>
+    <a href="{{ url_for('browse_jobs') }}" class="btn btn-primary">🔍 Find Jobs</a>
+</div>
+
+<div class="card">
+    <h2 style="margin-bottom: 1.5rem; color: var(--primary);">My Applications</h2>
+    {% if applications %}
+        <table>
+            <tr>
+                <th>Company</th>
+                <th>Job Title</th>
+                <th>Applied On</th>
+                <th>Status</th>
+            </tr>
+            {% for app in applications %}
+            <tr>
+                <td style="font-weight: 600;">{{ app.job.company.name }}</td>
+                <td>{{ app.job.title }}</td>
+                <td>{{ app.applied_at.strftime('%Y-%m-%d') }}</td>
+                <td>
+                    <span class="status status-{{ app.status }}">{{ app.status }}</span>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <div style="text-align: center; padding: 3rem 0;">
+            <p style="color: var(--text-light); margin-bottom: 1rem; font-size: 1.1rem;">You haven't applied to any jobs yet.</p>
+            <a href="{{ url_for('browse_jobs') }}" class="btn btn-secondary">Browse Openings Now</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="text-align: center; margin-bottom: 3rem;">
+    <h1 style="color: var(--primary); font-size: 2.5rem; margin-bottom: 0.5rem;">Opportunities</h1>
+    <p style="color: var(--text-light); font-size: 1.2rem;">Find the best role for your career</p>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 2rem;">
+    {% if jobs %}
+        {% for job in jobs %}
+            {% if job.company.is_approved %}
+                <div class="card" style="display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                            <h2 style="font-size: 1.4rem; color: var(--text-main);">{{ job.title }}</h2>
+                            <span style="background: #e0e7ff; color: var(--primary); padding: 0.3rem 0.6rem; border-radius: 6px; font-weight: 600; font-size: 0.8rem;">New</span>
+                        </div>
+                        <h3 style="color: var(--text-light); font-size: 1rem; margin-bottom: 1rem;">🏢 {{ job.company.name }}</h3>
+                        <p style="color: var(--text-main); line-height: 1.6; margin-bottom: 1.5rem;">{{ job.description }}</p>
+                    </div>
+                    <a href="{{ url_for('apply_job', job_id=job.id) }}" class="btn btn-primary" style="width: 100%; text-align: center;">Apply Now</a>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        <div style="grid-column: 1 / -1; text-align: center; padding: 4rem; background: white; border-radius: 12px;">
+            <h3 style="color: var(--text-light);">No jobs posted yet. Check back later!</h3>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

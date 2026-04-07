@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 style="margin-bottom: 2rem; color: var(--primary);">Admin Dashboard</h1>
+
+<div style="display: grid; grid-template-columns: 1fr; gap: 2rem;">
+    <div class="card">
+        <h2 style="margin-bottom: 1rem;">🏢 Company Approvals</h2>
+        {% if companies %}
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+                {% for company in companies %}
+                <tr>
+                    <td>#{{ company.id }}</td>
+                    <td style="font-weight: 600;">{{ company.name }}</td>
+                    <td>
+                        <span class="status {% if company.is_approved %}status-Accepted{% else %}status-Pending{% endif %}">
+                            {% if company.is_approved %}Active{% else %}Pending{% endif %}
+                        </span>
+                    </td>
+                    <td>
+                        {% if not company.is_approved %}
+                            <a href="{{ url_for('approve_company', company_id=company.id) }}" class="btn btn-success" style="padding: 0.4rem 0.8rem; font-size: 0.875rem;">✔ Approve</a>
+                        {% else %}
+                            <span style="color: var(--text-light);">-</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <p style="color: var(--text-light); text-align: center; padding: 2rem;">No companies registered yet.</p>
+        {% endif %}
+    </div>
+
+    <div class="card">
+        <h2 style="margin-bottom: 1rem;">🎓 Registered Students</h2>
+        {% if students %}
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>Degree</th>
+                    <th>Skills</th>
+                </tr>
+                {% for student in students %}
+                <tr>
+                    <td style="font-weight: 600;">{{ student.name }}</td>
+                    <td>{{ student.degree }}</td>
+                    <td>{{ student.skills }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <p style="color: var(--text-light); text-align: center; padding: 2rem;">No students registered yet.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

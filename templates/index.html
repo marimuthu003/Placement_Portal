@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="hero-section" style="padding: 8rem 1rem; text-align: center; position: relative; background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%); border-radius: 30px; margin-bottom: 4rem; box-shadow: 0 25px 50px -12px rgba(255, 126, 95, 0.3); overflow: hidden;">
+    <!-- Huge Glowing Orb Behind -->
+    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60vh; height: 60vh; background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, transparent 60%); filter: blur(40px); z-index: 1; animation: pulseGlow 5s infinite alternate; pointer-events: none;"></div>
+    
+    <div class="hero-content" style="position: relative; z-index: 2;">
+        <h1 class="gradient-text-anim textReveal" style="font-size: 4rem; margin-bottom: 1.5rem; font-weight: 800; letter-spacing: -1px; animation-delay: 0.2s;">Campus Placement Portal</h1>
+        <p class="textReveal" style="font-size: 1.3rem; margin-bottom: 3rem; color: rgba(255,255,255,0.9); max-width: 600px; margin-left: auto; margin-right: auto; animation-delay: 0.4s; font-weight: 400;">Step into the future of hiring. Connect the brightest minds with the world's leading tech companies effortlessly.</p>
+        
+        {% if not current_user.is_authenticated %}
+            <div class="textReveal" style="display: flex; gap: 1.5rem; justify-content: center; animation-delay: 0.6s;">
+                <a href="{{ url_for('register_student') }}" class="btn" style="background: white; color: var(--primary); font-size: 1.2rem; padding: 1rem 2.5rem; border-radius: 50px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); transition: transform 0.3s;">I am a Student</a>
+                <a href="{{ url_for('register_company') }}" class="btn" style="background: rgba(255,255,255,0.25); color: white; border: 1px solid rgba(255,255,255,0.5); backdrop-filter: blur(10px); font-size: 1.2rem; padding: 1rem 2.5rem; border-radius: 50px; transition: background 0.3s;">I am a Company</a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 3rem; margin-top: 2rem;">
+    <div class="card" style="text-align: center; animation-delay: 0.2s; border-top: 4px solid var(--primary);">
+        <div style="font-size: 4rem; margin-bottom: 1.5rem; animation: floatIcon 4s ease-in-out infinite;">🎓</div>
+        <h2 style="color: var(--text-main); margin-bottom: 1rem; font-size: 2rem;">For Students</h2>
+        <p style="color: var(--text-light); margin-bottom: 1.5rem; font-size: 1.1rem;">Find the perfect job matching your skills. Browse exclusive opportunities instantly and get hired.</p>
+    </div>
+    <div class="card" style="text-align: center; animation-delay: 0.4s; border-top: 4px solid var(--secondary);">
+        <div style="font-size: 4rem; margin-bottom: 1.5rem; animation: floatIcon 4s ease-in-out infinite 2s;">🚀</div>
+        <h2 style="color: var(--text-main); margin-bottom: 1rem; font-size: 2rem;">For Companies</h2>
+        <p style="color: var(--text-light); margin-bottom: 1.5rem; font-size: 1.1rem;">Post jobs and review applications seamlessly. Gain priority access to the best candidates on campus.</p>
+    </div>
+</div>
+{% endblock %}

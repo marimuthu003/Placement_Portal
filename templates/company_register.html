@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card" style="max-width: 500px; margin: 0 auto; box-shadow: 0 10px 40px rgba(0,0,0,0.1);">
+    <div style="text-align: center; margin-bottom: 2rem;">
+        <h2 style="color: var(--primary); font-size: 2rem;">Company Registration</h2>
+        <p style="color: var(--text-light);">Join us to hire the best talent</p>
+    </div>
+    
+    <form method="POST" action="{{ url_for('register_company') }}">
+        <div class="form-group">
+            <label>Login Username</label>
+            <input type="text" name="username" required>
+        </div>
+        <div class="form-group">
+            <label>Login Password</label>
+            <input type="password" name="password" required>
+        </div>
+        <div class="form-group">
+            <label>Company Name</label>
+            <input type="text" name="name" required>
+        </div>
+        <div class="form-group">
+            <label>Description/About</label>
+            <textarea name="description" rows="3" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem; padding: 0.8rem; font-size: 1.1rem;">Register Company</button>
+    </form>
+</div>
+{% endblock %}
