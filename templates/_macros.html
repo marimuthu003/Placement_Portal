@@ -1,0 +1,17 @@
+{% macro render_simple_pagination(pagination, prev_url, next_url) %}
+<div class="pagination">
+    {% if pagination.has_prev %}
+        <a href="{{ prev_url }}">&laquo; Prev</a>
+    {% else %}
+        <span class="disabled">&laquo; Prev</span>
+    {% endif %}
+    
+    <span class="current-page">Page {{ pagination.page }} of {{ pagination.pages or 1 }}</span>
+    
+    {% if pagination.has_next %}
+        <a href="{{ next_url }}">Next &raquo;</a>
+    {% else %}
+        <span class="disabled">Next &raquo;</span>
+    {% endif %}
+</div>
+{% endmacro %}

@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% from '_macros.html' import render_simple_pagination %}
 
 {% block content %}
 <h1 style="margin-bottom: 2rem; color: var(--primary);">Admin Dashboard</h1>
@@ -6,7 +7,7 @@
 <div style="display: grid; grid-template-columns: 1fr; gap: 2rem;">
     <div class="card">
         <h2 style="margin-bottom: 1rem;">🏢 Company Approvals</h2>
-        {% if companies %}
+        {% if companies.items %}
             <table>
                 <tr>
                     <th>ID</th>
@@ -14,7 +15,7 @@
                     <th>Status</th>
                     <th>Action</th>
                 </tr>
-                {% for company in companies %}
+                {% for company in companies.items %}
                 <tr>
                     <td>#{{ company.id }}</td>
                     <td style="font-weight: 600;">{{ company.name }}</td>
@@ -33,6 +34,8 @@
                 </tr>
                 {% endfor %}
             </table>
+            
+            {{ render_simple_pagination(companies, url_for('admin_dashboard', c_page=companies.prev_num, s_page=students.page), url_for('admin_dashboard', c_page=companies.next_num, s_page=students.page)) }}
         {% else %}
             <p style="color: var(--text-light); text-align: center; padding: 2rem;">No companies registered yet.</p>
         {% endif %}
@@ -40,14 +43,14 @@
 
     <div class="card">
         <h2 style="margin-bottom: 1rem;">🎓 Registered Students</h2>
-        {% if students %}
+        {% if students.items %}
             <table>
                 <tr>
                     <th>Name</th>
                     <th>Degree</th>
                     <th>Skills</th>
                 </tr>
-                {% for student in students %}
+                {% for student in students.items %}
                 <tr>
                     <td style="font-weight: 600;">{{ student.name }}</td>
                     <td>{{ student.degree }}</td>
@@ -55,6 +58,8 @@
                 </tr>
                 {% endfor %}
             </table>
+            
+            {{ render_simple_pagination(students, url_for('admin_dashboard', c_page=companies.page, s_page=students.prev_num), url_for('admin_dashboard', c_page=companies.page, s_page=students.next_num)) }}
         {% else %}
             <p style="color: var(--text-light); text-align: center; padding: 2rem;">No students registered yet.</p>
         {% endif %}

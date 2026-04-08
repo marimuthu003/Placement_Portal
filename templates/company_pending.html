@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card" style="max-width: 600px; margin: 4rem auto; text-align: center; padding: 4rem 2rem;">
+    <div style="font-size: 4rem; margin-bottom: 1.5rem; animation: floatIcon 3s infinite;">⏳</div>
+    <h1 style="color: var(--primary); margin-bottom: 1rem; font-size: 2.2rem;">Approval Pending</h1>
+    <p style="color: var(--text-light); font-size: 1.1rem; line-height: 1.8; margin-bottom: 2rem;">
+        Thank you for registering <strong>{{ current_user.company_profile.name }}</strong> on our platform. 
+        Your account is currently under review by our administrators.
+    </p>
+    <div style="background: rgba(249, 115, 22, 0.05); padding: 1.5rem; border-radius: 12px; display: inline-block; border: 1px solid rgba(249, 115, 22, 0.2);">
+        <p style="color: var(--text-main); font-weight: 600;">What's next?</p>
+        <p style="color: var(--text-light); font-size: 0.95rem; margin-top: 0.5rem;">We'll review your company details shortly. Once approved, you'll be able to post job openings and recruit students here.</p>
+    </div>
+</div>
+{% endblock %}

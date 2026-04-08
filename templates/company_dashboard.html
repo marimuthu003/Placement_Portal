@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% from '_macros.html' import render_simple_pagination %}
 
 {% block content %}
 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
@@ -29,9 +30,9 @@
     <div style="display: flex; flex-direction: column; gap: 2rem;">
         <div class="card">
             <h2 style="margin-bottom: 1rem;">Active Job Postings</h2>
-            {% if jobs %}
+            {% if jobs.items %}
                 <ul>
-                    {% for job in jobs %}
+                    {% for job in jobs.items %}
                         <li style="margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); list-style-type: none;">
                             <h3 style="color: var(--text-main);">{{ job.title }}</h3>
                             <p style="color: var(--text-light); font-size: 0.9rem;">{{ job.description }}</p>
@@ -39,6 +40,7 @@
                         </li>
                     {% endfor %}
                 </ul>
+                {{ render_simple_pagination(jobs, url_for('company_dashboard', j_page=jobs.prev_num, a_page=applications.page), url_for('company_dashboard', j_page=jobs.next_num, a_page=applications.page)) }}
             {% else %}
                 <p style="color: var(--text-light);">No jobs posted yet.</p>
             {% endif %}
@@ -46,7 +48,7 @@
 
         <div class="card">
             <h2 style="margin-bottom: 1rem;">Incoming Applications</h2>
-            {% if applications %}
+            {% if applications.items %}
                 <table>
                     <tr>
                         <th>Student Name</th>
@@ -54,7 +56,7 @@
                         <th>Status</th>
                         <th>Action</th>
                     </tr>
-                    {% for app in applications %}
+                    {% for app in applications.items %}
                     <tr>
                         <td style="font-weight: 600;">{{ app.student.name }}</td>
                         <td>{{ app.job.title }}</td>
@@ -70,6 +72,7 @@
                     </tr>
                     {% endfor %}
                 </table>
+                {{ render_simple_pagination(applications, url_for('company_dashboard', j_page=jobs.page, a_page=applications.prev_num), url_for('company_dashboard', j_page=jobs.page, a_page=applications.next_num)) }}
             {% else %}
                 <p style="color: var(--text-light);">No applications received yet.</p>
             {% endif %}

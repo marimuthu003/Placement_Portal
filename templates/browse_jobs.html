@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% from '_macros.html' import render_simple_pagination %}
 
 {% block content %}
 <div style="text-align: center; margin-bottom: 3rem;">
@@ -7,8 +8,8 @@
 </div>
 
 <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 2rem;">
-    {% if jobs %}
-        {% for job in jobs %}
+    {% if jobs.items %}
+        {% for job in jobs.items %}
             {% if job.company.is_approved %}
                 <div class="card" style="display: flex; flex-direction: column; justify-content: space-between;">
                     <div>
@@ -29,4 +30,7 @@
         </div>
     {% endif %}
 </div>
+
+{{ render_simple_pagination(jobs, url_for('browse_jobs', page=jobs.prev_num), url_for('browse_jobs', page=jobs.next_num)) }}
+
 {% endblock %}

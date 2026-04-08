@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% from '_macros.html' import render_simple_pagination %}
 
 {% block content %}
 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
@@ -20,7 +21,7 @@
 
 <div class="card">
     <h2 style="margin-bottom: 1.5rem; color: var(--primary);">My Applications</h2>
-    {% if applications %}
+    {% if applications.items %}
         <table>
             <tr>
                 <th>Company</th>
@@ -28,7 +29,7 @@
                 <th>Applied On</th>
                 <th>Status</th>
             </tr>
-            {% for app in applications %}
+            {% for app in applications.items %}
             <tr>
                 <td style="font-weight: 600;">{{ app.job.company.name }}</td>
                 <td>{{ app.job.title }}</td>
@@ -39,6 +40,8 @@
             </tr>
             {% endfor %}
         </table>
+        
+        {{ render_simple_pagination(applications, url_for('student_dashboard', page=applications.prev_num), url_for('student_dashboard', page=applications.next_num)) }}
     {% else %}
         <div style="text-align: center; padding: 3rem 0;">
             <p style="color: var(--text-light); margin-bottom: 1rem; font-size: 1.1rem;">You haven't applied to any jobs yet.</p>
